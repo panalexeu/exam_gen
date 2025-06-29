@@ -1,13 +1,7 @@
 import random
+from typing import List
 
 from ..llm import Exam
-
-
-import random
-from typing import List
-from pydantic import BaseModel
-
-
 
 
 def _unique(seq: List[str]) -> List[str]:
@@ -48,10 +42,10 @@ def exam_to_html(exam: Exam) -> str:
 """
 
     for idx, q in enumerate(exam.questions):
-        answers = _unique(q.possible_answers)          # de-dupe wrong answers
+        answers = _unique(q.possible_answers)  # de-dupe wrong answers
         if q.correct_answer not in answers:
             answers.append(q.correct_answer)
-        answers = _unique(answers)                     # sanity re-de-dupe
+        answers = _unique(answers)  # sanity re-de-dupe
         random.shuffle(answers)
 
         html += f"""
