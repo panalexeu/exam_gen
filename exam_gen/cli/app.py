@@ -27,7 +27,7 @@ def gen(
         topics: Annotated[list[str], Option()] = _topics(),
         q_amount: Annotated[int, Option()] = 10,
         model: Annotated[str, Option()] = 'gpt-4.1-mini',
-        temperature: Annotated[int, Option()] = 1
+        temperature: Annotated[float, Option()] = 1
 ):
     # check the values provided if not default is provided
     if set(topics) != set(_topics()):
@@ -52,7 +52,6 @@ def gen(
         model=model,
         temperature=temperature
     )
-    breakpoint()
 
     # create an exam html
     html = exam_to_html(res)

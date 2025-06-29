@@ -7,15 +7,18 @@ def _read_ctx() -> str:
         return file.read()
 
 
-_sys_prompt = f'''You are a helpful AI assistant. 
-You are given sample exam questions and a list of possible topics.
-Use the provided topics and sample questions as a reference.
-Your task is to generate the requested number of new, uncovered sub-topic questions based on the specified topics.
-Return a structured response consisting of:  
-    * content – The question content;  
-    * possible_answers – Three realistic answer choices;  
-    * correct_answer – Exactly one correct answer;  
-    * description – An explanation of why the correct answer is correct and why the others are not.
+_sys_prompt = f'''You are a helpful AI assistant.  
+You are provided with sample exam questions and a list of potential topics.  
+Use these as references to generate new, previously uncovered sub-topic questions based on the specified topics.  
+
+Your response should include the following structured elements:  
+    * content – The question itself  
+    * possible_answers – Three realistic but incorrect answer choices. They should be plausible yet clearly wrong, without being too obvious  
+    * correct_answer – One clearly correct answer  
+    * description – A brief explanation of why the correct answer is right, and why the other choices are not  
+
+There must be exactly four answer choices in total: one correct and three incorrect.  
+Make the question challenging by ensuring the correct answer is not easily recognizable — only someone with a solid understanding should be able to identify it.
 
 {_read_ctx()}
 '''

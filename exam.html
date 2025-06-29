@@ -2,67 +2,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Exam</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .question { margin-bottom: 30px; }
-        .answers span {
-            display: block;
-            margin: 4px 0;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-            width: fit-content;
-        }
-        .spoiler {
-            background-color: black;
-            color: black;
-            cursor: pointer;
-            display: inline-block;
-            padding: 3px 6px;
-            border-radius: 5px;
-        }
-        .spoiler.revealed {
-            color: white;
-        }
-        .correct { background-color: #c8e6c9; }  /* green */
-        .wrong { background-color: #ffcdd2; }    /* red */
-        #showAnswersBtn {
-            margin-bottom: 20px;
-            padding: 8px 12px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Exam</title>
+<style>
+    body { font-family: sans-serif; padding: 20px; }
+    .question { margin-bottom: 30px; }
+    .answers span {
+        display: block; margin: 4px 0; padding: 5px;
+        border: 1px solid #ccc; border-radius: 5px;
+        cursor: pointer; width: fit-content;
+    }
+    .spoiler {
+        background-color: black; color: black; cursor: pointer;
+        display: inline-block; padding: 3px 6px; border-radius: 5px;
+    }
+    .spoiler.revealed { color: white; }
+    .correct { background-color: #c8e6c9; }
+    .wrong   { background-color: #ffcdd2; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+</style>
 </head>
 <body>
 
 <h1>Exam</h1>
-<button id="showAnswersBtn">Show Answers</button>
 <div id="exam">
 
 <div class="question" id="q0">
-    <p><strong>Q1:</strong> Що таке агент у системі штучного інтелекту?</p>
+    <p><strong>Q1:</strong> Які з описаних типів операційних систем призначені для роботи з обмеженими ресурсами та суворими вимогами щодо часу відгуку?</p>
     <div class="answers">
-<span data-correct="wrong">Програма, що задає правила навчання нейронної мережі.</span>
-<span data-correct="correct">Об'єкт, який сприймає інформацію з середовища і здійснює дії для досягнення мети.</span>
-<span data-correct="wrong">База даних для зберігання знань та фактів.</span>
-<span data-correct="wrong"></span>
+<span data-correct="false">Багатокористувацькі операційні системи</span>
+<span data-correct="false">Системи з графічним інтерфейсом користувача</span>
+<span data-correct="true">Операційні системи реального часу</span>
+<span data-correct="false">Однокористувацькі операційні системи загального призначення</span>
 
     </div>
-    <p>Description: <span class="spoiler" onclick="this.classList.toggle('revealed')">Агент у системі штучного інтелекту – це об'єкт, що отримує інформацію із середовища, обробляє її і виконує дії для досягнення заданої мети. Інші варіанти описують інші компоненти систем, але не агента.</span></p>
+    <p>Description: <span class="spoiler">Операційні системи реального часу розроблені для систем з обмеженими ресурсами, де критично важливо забезпечити гарантований час відгуку. Багатокористувацькі операційні системи призначені для одночасної роботи декількох користувачів, але не обов'язково з урахуванням реального часу. Системи з графічним інтерфейсом призначені для зручності користувача, але не гарантують реальний час відгуку. Однокористувацькі ОС загального призначення не адаптовані для суворих часових меж.</span></p>
 </div>
 
 </div>
+
 <script>
-    document.getElementById("showAnswersBtn").onclick = function() {
-        const answers = document.querySelectorAll(".answers span");
-        answers.forEach(el => {
-            el.classList.add(el.dataset.correct);
+document.addEventListener("DOMContentLoaded", () => {
+
+    // Spoiler toggle
+    document.querySelectorAll(".spoiler").forEach(el =>
+        el.addEventListener("click", () => el.classList.toggle("revealed"))
+    );
+
+    // Answer selection logic
+    document.querySelectorAll(".answers").forEach(group => {
+        group.querySelectorAll("span").forEach(option => {
+            option.addEventListener("click", () => {
+                if (group.classList.contains("disabled")) return;
+
+                const isCorrect = option.dataset.correct === "true";
+                option.classList.add(isCorrect ? "correct" : "wrong");
+
+                group.querySelectorAll("span").forEach(span => {
+                    span.classList.add("disabled");
+                    if (span.dataset.correct === "true") span.classList.add("correct");
+                });
+                group.classList.add("disabled");
+            });
         });
-    };
+    });
+
+});
 </script>
+
 </body>
 </html>
